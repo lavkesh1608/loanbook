@@ -1,0 +1,67 @@
+
+<table id="customers">
+		<tr>
+		<th colspan="5">Books You Want</th>
+	</tr>
+	<tr>
+		<th>
+			No.
+		</th>
+		<th>
+			BookTitle
+		</th>
+		<th>
+			Status
+		</th>
+		<th>
+			Return Date
+		</th>
+		<th>
+			
+			Days Left
+			</th>
+	</tr>
+	<%@no=0%>
+	<%@el=0%>
+	<%@rd=0%>
+	<%if @bookreq.present?%>
+	<%@bookreq.each do |r| %>
+	<tr>
+		<td>
+			<%=@no=@no+1%>
+		</td>
+		<td>
+					<%@book=getBookDetail(r.book_id)%>
+					<%=@book.title%>
+	
+		</td>
+		<td>
+			<%=r.status%>
+		</td>
+		
+		<td>
+			<%=@arrreturndate[@rd]%>
+			
+		</td>
+		
+		<td class="daysleft">
+			
+			
+			<%if @arrdays[@el]!=nil %>
+			<% if (@arrdays[@el]) > 0%>
+			<%=@arrdays[@el] %>
+			
+			<%else %>
+
+				Over due <%=@arrdays[@el].to_s.at(1..2) %> days
+			<%end%>
+			<%end%>
+				
+		</td>
+		<%@el=@el+1%>
+		<%@rd=@rd+1%>
+	</tr>
+<%end%>
+<%end%>
+</table>
+

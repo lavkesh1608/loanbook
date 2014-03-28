@@ -1,0 +1,55 @@
+
+#loginform p label{
+display: block;
+width: 100%;
+}
+
+.input {
+box-shadow: 0 1px 0 white,inset 0 1px 3px rgba(0,0,0,0.1);
+border: 1px solid #ccc;
+background: #fff;
+height: 15px;
+padding: 6px;
+transition: border .15s linear;
+-moz-transition: border .15s linear;
+-webkit-transition: border .15s linear;
+-o-transition: border .15s linear;
+}
+
+.submit{
+width: 164px;
+padding: 5px;
+background-color: #97c950;
+font-family: inherit;
+font-size: 17px;
+font-variant: small-caps;
+font-weight: bold;
+border-radius: 3px;
+cursor: pointer;
+
+}
+
+.input:focus {
+border: 1px solid #aaa;
+}
+
+
+input, textarea, select {
+font: 400 12px Arial,Tahoma,Verdana,sans-serif;
+margin: 0;
+padding: 0;
+}
+
+textarea{	
+height: 60px;
+width: 162px;
+}
+
+select {
+width: 160px;
+padding: 6px;
+}
+
+select:focus {
+outline: 0;
+}

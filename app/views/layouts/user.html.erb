@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>LoanBook</title>
+  <meta name="google-site-verification" content="SWTMiN42XwHMmxDwW1Z1nAxtl_arXRjSVZmu0cNNc5M" />
+  	<%= stylesheet_link_tag    "application", media: "all" %>
+	<%= stylesheet_link_tag    "loginform", media: "all" %>
+  	<%= javascript_include_tag "jquery-1.11.0.min" %>
+  	<%= stylesheet_link_tag    "style", media: "all" %>
+    <%= javascript_include_tag "http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"%>
+    <%= csrf_meta_tags %>
+  
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+   <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+ 
+   <script>
+   $(function(){
+   
+     $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+   
+   });
+   </script>
+ 	  <style type="text/css">
+  	
+  	label.error{
+  		color:#B00100;
+  	}
+  	.error_messages{
+  		color:#B00100;
+  	}
+  	.flash_msg{
+  		color:green;
+  	}
+  	
+  </style>
+  
+ <meta name="msvalidate.01" content="0BAAAAD7FA97943CA0087B2FB7FAF5C6" />
+ </head>
+<body>
+	 <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"/>
+
+ <div class="header">
+    <div class="header_resize">
+      <div class="logo">
+      
+        <h1><a href="index.html"><span>Loan</span>Book
+        <small>Put your slogan here</small></a></h1>
+      
+      </div>
+      <div class="clr"></div>
+      <div class="menu">
+      
+        <ul>
+           <li><span><%=link_to "Home",user_home_path%></span></li>
+		   <li><%=link_to "AddBook",new_book_path%></li>
+		   <li><%=link_to "My Book", user_book_path%></li>
+		   <li><%=link_to "Borrower Page",borrower_page_path%></li>
+		   <li><%=link_to "Lender Page",lander_page_path%></li>
+		    <li><%=link_to "All Book",all_book_path%></li>
+		     <% if session[:user_id].to_i==1%>
+		     <li><%=link_to "AddCategory",add_cate_path%></li>
+		     <%end%>
+        </ul>
+    
+      </div>
+      <div id="header" style="float: right;margin-right: 100px;margin-top: -20px;position: relative">
+      	
+     
+      
+      <%=link_to "Notification","#",:id=>"notification"%><%@notification=getNotification%>
+      
+<div class="txt"><%=@notification.count if @notification.count!=0 %></div>
+      	<%=link_to "Account Setting",user_account_path%>&nbsp;&nbsp;
+	       <%=link_to "logout" ,user_logout_path%>
+	  <div id="notification_div" style="display: none;width:100%;position: absolute;background-color: #ccc;text-decoration: initial;padding: 5px;border-radius: 3px;">
+      	<table id="notification_table"></table>
+      	
+      </div>
+      </div>
+
+      <div class="search">
+     
+	
+		 Search <input type="text" name="searchBook" id="searchBook" class="input" placeholder="Search Book" />
+	 <div class="bookresult" style="display: none;position: absolute;background-color: #ccc;border-radius: 5px;padding: 5px;">
+		<table id="searchResult">
+			<tr><th>Book Title</th><th>Detail</th><th>SendRequest</th></tr>
+
+		</table>
+		
+	</div>
+	</div>
+	
+
+           
+         
+     
+      </div>
+     <div class="clr"></div>
+     </div>
+  
+    <div class="clr"></div>
+   </div>
+  <div class="content" align="center" style="height: 400px;">
+  	<div id="flashmsg">
+  			<% flash.each do |name, msg| %>
+  			<!--  start message-green -->
+				<div id="message-green">
+				<table border="0" width="60%" cellpadding="0" cellspacing="0" id="msg_table">
+				<tr>
+					<td class="green-left"><%=msg%> </td>
+					<td class="green-right"><a class="close-green"><img src="/images/icon_close_green.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-green -->
+
+			<% end %>
+  	</div>
+
+<%= yield %>
+  </div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="footer">
+    <div class="footer_resize">
+    	<p>Follow Us</p>
+    	<p class=""><iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Floanbook1%2F&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21&amp;appId=573216716030027" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe></p>
+     <br />
+      <p class="lf">&copy; Copyright <a href="#">MyWebSite</a>.</p>
+      <p class="rf">Layout by Hot <a href="#">Techvalens.com</a></p>
+      <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+
+
+<div style="float: right;margin-right: 200px;">
+
+
+	
+</div>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	$("#login_window").hide();
+	$('#sign_up_window2').hide();
+	 $('#searchBook').keyup(function()
+  {
+  var booktext=$(this).val();
+  
+  $(".bookresult").show();
+
+
+  if(booktext!=''){
+   
+  $.ajax({
+
+          type: "POST",         
+          data: {Booktext:booktext},
+           url: "/book/search_book",
+          dataType: "JSON",
+         
+          success: function(result){
+	               	if(result)
+               	{
+               		
+                   $.each(result, function(i, j){
+                   	
+                   	  $("#searchResult td").each(function() {
+
+      				  text = $(this).text();
+
+      				  if(text==j.title) {
+       					 	$(this).closest("tr").remove();
+           	
+       				   }
+       
+   					 });
+         //         	 $("#searchResult > tbody").html("");
+            		 $('#searchResult').append($('<tr><td>'+j.title+'</td><td><a href=#>'+j.status+'</a></td><td><input type=hidden class="booklanderid"  value='+j.user_id+' /><a href=/book/book_request/'+j.id+' >SendRequest</a></td></tr>'));
+       				               
+              		   //$('.bookresult').html(j.title);
+                      // $('#searchResult tr:last').remove();
+                       
+                	 });             
+                	 
+
+                   $(".bookresult").css("color","green");
+                    
+                }else{
+
+                       $('.bookresult').html('This Username Is Avaliable');
+                       $(".bookresult").css("color","green");
+                    
+            }
+         }
+
+      });
+   }else{
+		 $("#searchResult > tbody").html("");
+		  $('#searchResult').append($('<tr><th>Book Title </th><th>Detail</th><th>Send Request</th></tr>'));
+  		  $(".bookresult").hide();
+      
+        }
+
+   });
+  
+
+  	$(document).on('click',".user_id_class",function (){    
+  		
+  		var book_id=$(this).attr('id');bookresult
+  		var booklanderid = $(this).siblings('.booklanderid').attr('value');
+   		var id = $(this).attr('id');
+
+					  $.ajax({
+				 	        type: "POST",
+							data: {Book_id:book_id,Book_lander_id:booklanderid },
+
+				 		    url: '/book/book_request',
+	
+                            dataType: "JSON",
+                      
+	  					    success: function(data){                    
+                       // Clear all options from sub category select
+                         if(data){
+       							                  	
+                         }else{
+                         	
+                         }
+                         }
+  		
+  					 });
+  
+    	});
+    	
+    	var data = $("#customers tr").map(function (index, elem) {
+       
+        $('.daysleft', this).each(function () {
+            var d = $(this).val()||$(this).text();
+            var duetd=$.trim(d);
+            if(duetd.length>1){
+            	$(this).css("color","red");
+            	$(this).closest('tr').css("background-color","burlywood");
+            }
+            
+          
+            
+           
+            });
+         });
+         
+           $('.close-green').click(function(){
+  				$('#message-green').hide();
+  	
+  			});
+  
+  
+         
+    	 $('#categry_category_id').change(function(){
+  
+ 			 var cid=$(this).val();
+ 			
+  
+ 			$("#all_book_table > tbody").html('');
+		  	$('#all_book_table').append($('<tr><th>Book Title </th><th>Detail</th><th>Send Request</th></tr>'));
+
+
+  if(cid!=''){
+   
+  $.ajax({
+
+          type: "POST",         
+          data: {Cid:cid},
+          url: "/book/search_book_by_cate",
+          dataType: "JSON",
+         
+          success: function(result){
+	               	if(result)
+               	{
+               		
+                   $.each(result, function(i, j){
+          
+         //         	 $("#searchResult > tbody").html("");
+            		 $('#all_book_table').append($('<tr><td>'+j.title+'</td><td><a href=#>'+j.status+'</a></td><td><input type=hidden class="booklanderid"  value='+j.user_id+' /><a href=/book/book_request/'+j.id+' >SendRequest</a></td></tr>'));
+       				               
+              		   //$('.bookresult').html(j.title);
+                      // $('#searchResult tr:last').remove();
+                       
+                	 });             
+                	 
+
+                   $(".bookresult").css("color","green");
+                    
+                }else{
+                    
+                       $(".bookresult").css("color","green");
+		       }
+         }
+
+      });
+   }else{
+   	  alert("Please select category");
+		
+      
+        }
+
+   });
+   
+   $('#notification').click( function(){
+   	$('#notification_table > tbody').html('');
+    $("#notification_div").show();
+      	//alert("hi");
+   
+   	
+   	  $.ajax({
+   	  	
+   	  	type:"GET",
+   	  	url: "/user/notification",
+        dataType: "JSON",         
+        success: function(result){
+	               	if(result)
+               	 {
+               		
+                   $.each(result, function(i, j){
+                       $('#notification_table').append($('<tr><td>'+j.not_by+'</td><td><a href="#" class="notification_read" id='+j.id+'>'+j.not_msg+'</a></td></tr>'));
+       	                         		                      
+                	 });             
+                	 
+                }else{
+
+                    $('#notification_table > tbody').html('');
+                    $('#notification_table').append($('<tr><td>There is no new notification</td></tr>'));
+                    $(".notifictaion_div").css("color","green");
+                    
+            	}
+            
+            }
+   	  		
+   	  });
+   	
+   	
+   });
+   
+   	$(document).on('click',".notification_read",function (){    
+  	 	 
+   	var nid=$(this).attr('id');
+   	  $.ajax({
+   	  	
+   	  	type:"POST",
+   	  	data:{Nid:nid},
+   	  	url: "/user/update_notification",
+        dataType: "JSON",         
+        success: function(result){
+	               	if(result)
+               	{
+               		              		
+                                	 
+                }else{
+
+                 alert("There is a problem");
+            	}
+            
+            }
+   	    	  	
+   	  });
+   	
+   
+   });
+   
+    var welcome=$.trim($('.green-left').text());
+    //var res = str.match(/ain/g);
+    var un = welcome.substr(8,16);
+    var n=welcome.search("Welcome");
+    
+    
+    if(n==0){
+    	 
+    	$(".green-left").html("Welcome &nbsp;<span style='color: rgb(114, 44, 26);'>"+un+"</span>");
+ 
+    }
+    
+    $("input").on("keydown", function (e) {
+       return e.which !== 32;
+    });
+
+   
+    	
+  });
+	
+	
+</script>

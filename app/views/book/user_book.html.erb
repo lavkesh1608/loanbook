@@ -1,0 +1,51 @@
+
+<table id="customers">
+		<tr>
+		<th colspan="5">Books You Want</th>
+	</tr>
+	<tr>
+		<th>
+			No.
+		</th>
+		<th>
+			BookTitle
+		</th>
+		<th>
+			Tag
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+			Status
+		</th>
+			</tr>
+	<%@no=0%>
+	
+	<%@book.each do |r| %>
+	<tr>
+		<td>
+			<%=@no=@no+1%>
+		</td>
+		<td>
+								<%=r.title%>
+	
+		</td>
+		<td>
+			<%=r.tag%>
+		</td>
+		
+		<td>
+			<%=r.description%>
+			
+		</td>
+		
+		<td>
+			<%=r.status%>
+			
+		</td>
+		
+	</tr>
+<%end%>
+</table>
+

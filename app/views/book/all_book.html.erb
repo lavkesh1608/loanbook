@@ -1,0 +1,25 @@
+
+<br />
+<div id="sort_by_category">
+	Category<%= select("categry","category_id",@cate.collect{|c| [c.name,c.id] },{prompt:'Select Category'})%>
+    &nbsp;&nbsp;<%=link_to "All Book",all_book_path%>
+</div>
+<br />
+<div id="all_book">
+<table id="all_book_table" class="customers">
+	<tr>
+		<th>Book Title </th>
+		<th>Detail</th>
+		<th>Send Request</th>
+    </tr>
+    <%if @book.present?%>
+    <%@book.each do |b|%>
+    <tr>
+    	<td><%=b.title%></td>
+    	<td><%=b.status%></td>
+    	<td><%=link_to "SendRequest",book_request_path(b.id)%></td>
+    <%end%>
+    <%end%>
+</table>
+
+</div>

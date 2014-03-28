@@ -1,0 +1,42 @@
+<h4>Log-in</h4>
+<%= form_tag create_session_path ,:id=>"loginform" do %>
+
+<%= label_tag :email %><br />
+<%= text_field_tag :email, params[:email] ,:class=>"input" %><br />
+
+<%= label_tag :password %><br />
+<%= password_field_tag :password , '',:class=>"input"  %>
+
+<p class="button"><%= submit_tag 'Login' ,:class=>"submit"%></p>
+<% end %>
+<%= link_to "Forgot Password" ,"#" ,:id=>"mylink"%>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		   $('.close-green').click(function(){
+  	
+  	        $('#message-green').hide();
+  	
+           });
+	
+    $('#mylink').click(function(){
+		var em=document.getElementById('email').value;
+    	if(em==""){
+    		alert("Please insert Email");
+    		
+    	}
+    	else{
+    		
+    	 		alert("Your password was sent to this email");	
+    	 				   
+			 }
+    	    	   	
+   //do something here ,:onclick=>"checkemail();"
+    });
+    
+    
+	});
+	
+</script>
+

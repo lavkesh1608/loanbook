@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  not_by: 1
+  not_msg: MyString
+  not_to: 1
+  status: MyString
+  is_active: false
+
+two:
+  not_by: 1
+  not_msg: MyString
+  not_to: 1
+  status: MyString
+  is_active: false

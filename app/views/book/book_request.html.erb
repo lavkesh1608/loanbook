@@ -1,0 +1,115 @@
+<div id="divimagebox" style="display: none; margin-left: 900px;position: absolute; margin-top:10px;background-color: #fff;
+border-width: 1px 3px 3px 1px;
+border-style: solid;
+border-color: #c0c0c0;
+padding: 8px 0px 6px 6px;
+position: absolute;
+text-align: left;
+width: 230px;
+min-height: auto;
+align:right;
+float: right">
+ <img id="book_image" src="" />
+</div>
+
+<div >
+	<%=form_for @book ,:as=>:book_request,:method=>"post",:url=>create_book_request_path do |f| %>
+	<table id="customers">
+		<tr>
+			<th colspan="2">Book Detail</th>
+		</tr>
+			
+		<tr>
+			<td>Book Title</td>
+			<td><div class="input_div">
+				<%=@book.title%>
+		<%=f.hidden_field :book_id ,:value=>@book.id%>
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Description</td>
+			<td><div class="input_div">
+		<%=@book.description%>
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Status</td>
+			<td><div class="div_book_status">
+				<%=@book.status%>
+
+	</div></td>
+		</tr>
+		<tr>
+			<td>Book Image</td>
+			<td><div class="input_div">
+				
+			<a href="#" ><%= image_tag @book.book_image(:thumb) ,:size=>"50x50" ,:class=>"book_images" %></a>	
+
+				
+
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Lender</td>
+			<td><div class="input_div">
+				<%@user=getUserDetail(@book.user_id)%>
+		       <%=@user.name%>
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Lender Address</td>
+			<td><div class="input_div">
+					 <%=@user.shipping_address%>
+	</div> </td>
+		</tr>
+		</tr>
+			<tr>
+			<td></td>
+			<td><div class="input_div">
+			
+		<%=f.submit 'SubmitRequest'%>
+		
+	</div></td>
+		</tr>
+	</table>
+	
+	<%end%>
+	
+	
+	
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+ 		
+ 				$(".book_images").mouseenter(function(){
+
+ 		
+ 			  		var src = $(this).attr('src');
+ 			  		 $("#book_image").attr('src', $(this).attr('src').replace('/thumb', '/large'));
+ 			  		$('#divimagebox').show();
+ 			
+ 				});
+ 				
+ 		       $(".book_images").mouseleave(function(){
+   					 $('#divimagebox').hide();
+				});
+				
+				 var book_status=String($('.div_book_status').html());
+			    var str=$.trim(book_status);
+				if(str=="loaned Out"){
+					
+				
+						$('.div_book_status').closest("tr").css("color","red");
+										
+
+				}
+				else
+				{
+					$('.div_book_status').closest("tr").css("color","green");
+				}
+
+
+});
+</script>

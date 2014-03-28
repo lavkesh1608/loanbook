@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LoanBook</title>
+   
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+
+  
+
+  <%= javascript_include_tag "jquery-1.11.0.min" %>
+  <%= javascript_include_tag "validate" %>
+           
+
+  <%= javascript_include_tag "jscrop/jquery.imgareaselect.pack" %>
+  
+  <%= stylesheet_link_tag    "jscrop/imgareaselect-animated", media: "all" %>
+  <%= stylesheet_link_tag    "jscrop/imgareaselect-default", media: "all" %>
+  <%= stylesheet_link_tag    "jscrop/imgareaselect-deprecated", media: "all" %>
+
+  
+  <%= stylesheet_link_tag    "style", media: "all" %>
+  
+
+  <%= csrf_meta_tags %>
+  
+  <style type="text/css">
+  	label.error{
+  		color:#B00100;
+  	}
+  	.error_messages{
+  		color:#B00100;
+  	}
+  	.flash_msg{
+  		color:green;
+  	}
+  	
+  </style>
+  
+  <meta name="msvalidate.01" content="0BAAAAD7FA97943CA0087B2FB7FAF5C6" />
+  <meta name="google-site-verification" content="SWTMiN42XwHMmxDwW1Z1nAxtl_arXRjSVZmu0cNNc5M" />
+ 
+</head>
+<body>
+
+	 <input name="authenticity_token" 
+               type="hidden" 
+               value="<%= form_authenticity_token %>"/>
+               
+              
+  <div class="header">
+    <div class="header_resize">
+      <div class="logo">
+        <h1><a href="#"><span>Loan</span>Book
+          <small>Put your slogan here</small></a></h1>
+      </div>
+
+      <div class="clr"></div>
+      <div class="menu">
+        <ul>
+        	
+          <li><%=link_to "Home",root_url%></li>
+          <li><a href="#"><span>Services</span></a></li>
+          <li><a href="#"><span>About Us</span></a></li>
+          <li><a href="#"><span>Contact Us</span></a></li>
+          <li> <a href=”/auth/twitter”>Login Via Twitter</a></li>
+          
+        </ul>
+      </div>
+            <div id="header" style="float:right; margin-right:0px;margin-top: -40px;">
+			 <%=link_to "Login" ,'#', :id=>"login_link"%>
+		
+  <% if current_user %>
+ 
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <% else %>
+   
+   
+    <%= link_to  image_tag("/images/facebook_login.png",:width=>"44%" ), "/auth/facebook", id: "sign_in" %>
+  <a href="https://www.facebook.com/dialog/apprequests?app_id=1457341227829570&message=Hi like us your friend like this&redirect_uri=http://loanbook.herokuapp.com" ><img src="/images/Invite-friend.png" alt="Smiley face" width="100" height="38" id="invitfb" /></a>
+  <% end %>
+
+     		</div>
+
+      <div class="search">
+    Search <input type="text" name="searchBook" id="searchBook" class="input" placeholder="Search Book" />   
+	 <div class="bookresult" style="display: none;position: absolute;background-color: #ccc;border-radius: 5px;padding: 5px;">
+		<table id="searchResult">
+			<tr><th>Book Title</th><th>Detail</th><th>SendRequest</th></tr>
+
+		</table>
+        
+        
+      </div>
+      <div class="clr"></div>
+    </div>
+  
+    <div class="clr"></div>
+  </div>
+  <div class="content" style="margin-left: 300px;">
+  	<div id="flashmsg">
+  			<% flash.each do |name, msg| %>
+  			<!--  start message-green -->
+				<div id="message-green">
+				<table border="0" width="80%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="green-left"><%=msg%> </td>
+					<td class="green-right"><a class="close-green"><img src="/images/icon_close_green.gif"   alt="" /></a></td>
+				</tr>
+				</table>
+				</div>
+				<!--  end message-green -->
+
+			<% end %>
+  	</div>
+  
+
+<%= yield %>
+  </div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="footer">
+    <div class="footer_resize">
+    	<p>Follow Us</p>
+    	<p class="">
+    		<!--><iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Floanbook1%2F&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21&amp;appId=573216716030027" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe></p>
+       <br />
+      !-->
+      <p class="lf">&copy; Copyright <a href="#">MyWebSite</a>.</p>
+      <p class="rf">Layout by Hot <a href="#">Techvalens.com</a></p>
+      <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function($){
+	
+    $("#cropImage").hide();
+ 	$(function($){
+     Test = {
+        UpdatePreview: function(obj){
+          // if IE < 10 doesn't support FileReader
+          if(!window.FileReader){
+             // don't know how to proceed to assign src to image tag
+          } else {
+             var reader = new FileReader();
+             var target = null;
+
+             reader.onload = function(e) {
+                target =  e.target || e.srcElement;
+               $("#preveiwphoto").prop("src", target.result);
+			   $("#preveiwpt").prop("src", target.result);
+               $("#cropImage").show();
+               $('img#preveiwphoto').imgAreaSelect({ x1: 120, y1: 90, x2: 280, y2: 210        			
+        
+    			});
+                             
+                           };
+              reader.readAsDataURL(obj.files[0]);
+          }
+        }
+     };
+	});
+
+
+	$("#login_window").hide();
+	 $('#searchBook').keyup(function()
+  {
+  var booktext=$(this).val();
+  
+  $(".bookresult").show();
+
+
+  if(booktext!=''){
+   
+  $.ajax({
+
+          type: "POST",         
+          data: {Booktext:booktext},
+           url: "/book/search_book",
+          dataType: "JSON",
+         
+          success: function(result){
+	               	if(result)
+               	{
+               		
+                   $.each(result, function(i, j){
+                   	
+                   	  $("#searchResult td").each(function() {
+
+      				  text = $(this).text();
+
+      				  if(text==j.title) {
+       					 	$(this).closest("tr").remove();
+           	
+       				   }
+       
+   					 });
+         //         	 $("#searchResult > tbody").html("");
+            		 $('#searchResult').append($('<tr><td>'+j.title+'</td><td><a href=#>'+j.status+'</a></td><td><input type=hidden class="booklanderid"  value='+j.user_id+' /><a href=/book/book_request/'+j.id+' >SendRequest</a></td></tr>'));
+       				               
+              		   //$('.bookresult').html(j.title);
+                      // $('#searchResult tr:last').remove();
+                       
+                	 });             
+                	 
+
+                   $(".bookresult").css("color","green");
+                    
+                }else{
+
+                       $('.bookresult').html('This Username Is Avaliable');
+                       $(".bookresult").css("color","green");
+                    
+                }
+         }
+
+      });
+   }else{
+		 $("#searchResult > tbody").html("");
+		  $('#searchResult').append($('<tr><th>Book Title </th><th>Detail</th><th>Send Request</th></tr>'));
+  		  $(".bookresult").hide();
+      
+        }
+
+   });
+   
+   
+  $("#login_link").click(function  () {
+   	
+   	$("#login_window").show();
+     
+  });
+   
+
+  $(".close_window").click(function() {
+     $("#login_window").hide();
+   });
+   
+   
+   
+ });
+ 
+ </script>
+ <script type="text/javascript">
+function preview(img, selection) {
+    if (!selection.width || !selection.height)
+        return;
+    
+    var scaleX = 100 / selection.width;
+    var scaleY = 100 / selection.height;
+    
+    //alert(selection.width);
+    //alert(selection.height);
+
+    $('#preview img').css({
+        width: Math.round(scaleX * 300),
+        height: Math.round(scaleY * 250),
+        marginLeft: -Math.round(scaleX * selection.x1),
+        marginTop: -Math.round(scaleY * selection.y1)
+    });
+
+	 $('#user_width').val(Math.round(scaleX * 300));
+	 $('#user_height').val(Math.round(scaleY * 250));
+	 $('#user_marginleft').val(-Math.round(scaleX * selection.x1));
+	 $('#user_marginright').val(-Math.round(scaleY * selection.y1));
+
+   		 $('#x1').val(selection.x1);
+    	 $('#y1').val(selection.y1);
+    	 $('#x2').val(selection.x2);
+    	 $('#y2').val(selection.y2);
+    	 $('#w').val(selection.width);
+    	 $('#h').val(selection.height);
+}
+  $(function () {
+    $('#preveiwphoto').imgAreaSelect({ aspectRatio: '1:1', handles: true,
+        fadeSpeed: 200, onSelectChange: preview });
+});
+
+
+</script>
+ 
+

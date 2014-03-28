@@ -1,0 +1,41 @@
+<div>
+<% if @cate.errors.any? %>
+<div class="error_messages">
+<h2>Form is invalid</h2>
+<ul>
+<% for message in @cate.errors.full_messages %>
+<li><%= message %></li>
+<% end %>
+</ul>
+</div>
+<%end%>
+
+<%=form_for @cate ,:as=>:cate,:method=>"post",:url=>create_cate_path do |f| %>
+	<table id="customers">
+		<tr>
+			<th colspan="2">Add Category</th>
+		</tr>
+			
+		<tr>
+			<td>Category Name</td>
+			<td><div class="input_div">
+		<%=f.text_field :name ,:class=>"input"%>
+	</div></td>
+		</tr>
+			<tr>
+			<td> Description</td>
+			<td><div class="input_div">
+		<%=f.text_area :description %>
+	</div></td>
+		</tr>
+			<tr>
+						
+			<td colspan="2" align="center"><div class="div_book_status">
+				<%=f.submit "submit", :class=>"submit" %>
+			</div>
+			</td>
+			</tr>
+			</table>
+			<%end%>
+</div>
+

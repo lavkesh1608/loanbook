@@ -1,0 +1,73 @@
+
+<div >
+
+	<%=form_for @bookres ,:as=>:book_response,:method=>"post",:url=>create_book_response_path do |f| %>
+	<table id="customers">
+		<%if @bookreq.present? %>
+		<tr>
+			<td>Book Title</td>
+			<td><div class="input_div">
+				
+				<%@book=getBookDetail(@bookreq.book_id) %>
+				<%=@book.title %>
+		<%=f.hidden_field :request_id ,:value=>@bookreq.id%>
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Description</td>
+			<td><div class="input_div">
+				
+		<%=@book.description %>
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Status</td>
+			<td><div class="input_div">
+		<%=@book.status %>
+
+	</div></td>
+		</tr>
+		<tr>
+			<td>Book Request Date</td>
+			<td><div class="input_div">
+				<%=@bookreq.date_of_request%>
+				
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Borrower</td>
+			<td><div class="input_div">
+				<% @user=getUserDetail(@bookreq.user_id)%>
+				<%=@user.name%>
+						
+	</div></td>
+		</tr>
+			<tr>
+			<td>Book Borrower Address</td>
+			<td><div class="input_div">
+				<%=@user.shipping_address %>
+	</div> </td>
+		</tr>
+		<%end%>
+			
+			<tr>
+			<td>Book Return Date</td>
+			<td><div class="input_div">
+				<%=f.text_field :return_date ,:id=>"datepicker" %>
+	</div></td>
+		</tr>
+		
+			<tr>
+		
+			<td colspan="2" style="text-align: center"><div class="input_div">
+			
+		<%=f.submit 'SubmitRequest'%>
+	</div></td>
+		</tr>
+	</table>
+	
+	<%end%>
+	<div style="float: left;margin-left: 300px;"><%=link_to "Go Back", lander_page_path %></div>
+		
+	
+</div>

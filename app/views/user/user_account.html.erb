@@ -1,0 +1,246 @@
+<% if @user.errors.any? %>
+<div class="error_messages">
+<h2>Form is invalid</h2>
+<ul>
+<% for message in @user.errors.full_messages %>
+<li><%= message %></li>
+<% end %>
+</ul>
+</div>
+<% end %>
+
+		<div id="sign_up_window" style="margin-top: 20px;">
+						<%= form_for@user,:as=>:user ,:method=>"post" ,:url=>update_user_path,:id=>"registrationForm" do |f| %>
+							
+						<div id="sign_up_window1">
+						<table> 
+							
+			<tr>
+				<td>Your Name
+					<div class="input_div">
+						<%=f.text_field :name ,:placeholder=>"Some text", :class=>"input"%>
+					</div>
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td>User Name
+					<div class="input_div">
+						<%=f.text_field :username , :class=>"user_name" , :class=>"input" %>
+						<div class="check"></div>
+					</div>
+					
+				</td>
+				
+		</tr>
+			
+			<tr>
+				<td>Your Email
+					<div class="input_div">
+						<%= f.text_field :email ,:value=>@user.email , :class=>"input"%>
+					</div>
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td>Password
+					<div class="input_div">
+						<%= f.password_field :password , :class=>"input" %>
+					</div>
+					
+				</td>
+				
+			</tr>
+			
+			
+			<tr>
+				<td>Your Address
+					<div class="input_div">
+						<%=f.text_field :shipping_address ,:value=>@user.shipping_address , :class=>"input"%>
+					</div>
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td>Zip Code
+					<div class="input_div">
+						<%=f.text_field :zip_code ,:value=>@user.zip_code , :class=>"input"%>
+					</div>
+					
+				</td>
+				
+		</tr>
+			
+			<tr>
+				<td>City
+					<div class="input_div">
+						<%= f.text_field :city ,:value=>@user.city , :class=>"input" %>
+					</div>
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td>Phone
+					<div class="input_div">
+						<%= f.text_field :phone ,:value=>@user.phone , :class=>"input"%>
+					</div>
+					
+				</td>
+				
+			</tr>
+			<tr>
+				<td>
+						<div class="frame" style="margin: 0 1em; width: 100px; height: 100px;">
+      	 
+      	 	<div id="preview" style="width:100px;height:100px; overflow:hidden;">
+      	 		            <script>
+      	 		            	
+      	 		            	$('#preview img').css({
+        width: <%=@user.width%>,
+        height: <%=@user.height%>,
+        marginLeft:<%=@user.marginleft%>,
+        marginTop: <%=@user.marginright%>
+    });
+      	 		            </script>
+    			<%= image_tag @user.photo.url(:large) ,:id=>"photo"%>
+ 			</div>
+      	 
+    	</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+				<input type="submit" value="update" class="submit" />	
+				</td>
+				
+			</tr>
+			
+			</table>
+	
+						</div>
+							
+
+						<%end%>
+		
+		
+		
+	</div>
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+
+		var  validator = $("#new_user").validate( {
+
+        rules:{
+        	 "user[name]": "required",
+        	  "user[phone]": "required",
+            "user[password]": {
+      	required: true,
+      minlength: 6
+    },
+            "user[email]": "required email"
+        },
+        messages:{
+            "user[name]": "Required",
+            "user[phone]": "Required",
+             "user[password]": {
+                required: "Enter Password",
+                minlength: "Enter Minimum 6 character"
+              },
+           "user[email]": {
+                required: "Enter email",
+                email: "Enter valid email"
+            	}
+        	}
+    	});
+    	
+    	$('#new_user').blur(function(){
+		    validator.validate();
+		 
+		});
+		
+		$('#sign_up_window2').hide();
+		$('#btnNext').click( function(){
+			if($('#new_user').valid()){
+				$('#sign_up_window2').show();
+				$('#sign_up_window1').hide(); 
+			}else{
+				
+			}
+			
+		});
+		
+	})
+	
+	
+	$(function()
+ {
+  $('#user_username').keyup(function()
+  {
+  var checkname=$(this).val();
+  
+
+  if(checkname!=''){
+  $('.check').show();
+
+
+ var uname = checkname;
+  $.ajax({
+
+          type: "POST",         
+          data: {Uname:uname},
+           url: "/user/check_username",
+          dataType: "JSON",
+         
+          success: function(result){
+
+                         
+                           
+               if(result){
+					  $('.check').html('This Username Is Already Taken');
+
+                      $(".check").css("color","red");
+                    
+                      $('.check').addClass("red");
+                      $(".user_name").removeClass("white");
+                      $(".user_name").addClass("yellow");
+						
+                
+
+               }else{
+
+                       $('.check').html('This Username Is Avaliable');
+
+                       $(".check").css("color","green");
+                    
+                       $(".user_name").removeClass("yellow");
+                       $(".user_name").addClass("white");
+            }
+         }
+
+      });
+
+   }else{
+
+       $('.check').html('');
+
+       }
+
+  });
+
+});
+
+
+
+	
+	
+	
+	
+	
+	
+</script>

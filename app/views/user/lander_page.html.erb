@@ -1,0 +1,75 @@
+
+<table id="customers">
+	<tr>
+		<th colspan="7"> Request For Your Book</th>
+	</tr>
+	<tr>
+		<th>
+			No.
+		</th>
+		<th>
+			BookTitle
+		</th>
+		<th>
+			Date of Request
+		</th>
+		<th>
+			Status
+		</th>
+		<th>
+			Return Date
+		</th>
+		<th>
+			
+			Days Left
+			</th>
+		<th>
+			Action
+		</th>
+	</tr>
+	<%@no=0%>
+	<%@el=0%>
+	<%if @bookreq.present?%>
+	<%@bookreq.each do |r| %>
+	<tr>
+		<td>
+			<%=@no=@no+1%>
+		</td>
+		<td>
+		
+			<%@book=getBookDetail(r.book_id)%>
+					<%=@book.title%>
+		</td>
+		<td>
+			<%=r.date_of_request.to_date.strftime("%Y/%m/%d") %>
+		</td>
+		<td>
+			<%=r.status%>
+		</td>
+		
+		<td>
+			<%=@arrreturndate[@el]%>
+			
+		</td>
+		<td class="daysleft">
+			
+		
+			<%if @arrdays[@el]!=nil %>
+			<%if @arrdays[@el]>0 %>
+			<%=@arrdays[@el]%>
+			<%else %>
+			Over due	<%=@arrdays[@el].to_s.at(1..2) %> days
+			<%end%>
+			<%end%>
+		
+			
+		</td>
+		<%@el=@el+1%>
+		<td>
+			<%=link_to "Response", book_response_path(r.id) %>/<%=link_to "Detail", book_response_path(r.id)%>
+		</td>
+	</tr>
+<%end%>
+<%end%>
+</table>
+
